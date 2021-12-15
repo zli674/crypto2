@@ -50,7 +50,6 @@ def RSA_encrypt_public_key(a_message):
     f2.close()
     return encoded_encrypted_msg
 
-
 def RSA_decrypt_private_key(private_key):
     # Read encrypted message from file
     f1 = open('Encrypted_AESkey.txt', 'rb')
@@ -166,49 +165,58 @@ def main():
     print("Welcome!")
     print("1. Generate new RSA keys")
     print("2. Use incoming RSA public key")
+    Bob_AES_key = Bob_AES_key_gen_send()
     user_input = input("Please make a choice '1' or '2' and press enter:")
+
     if user_input == '1':
         private_key = Alice_RSA_start()
+        #Bob_AES_key = Bob_AES_key_gen_send()
         print("Success! Your public key can be found in file: 'RSA_publickey.pem' and your private key is saved in "
               "memory.")
         print("Please share this public key with the person you are communicating with.")
         print("Place the 'Encrypted_AESkey.txt' file into the program directory to get your AES key.")
         print("Decrypting AES key...")
-        Alice_aes_key = Alice_get_AES_key(private_key)
+
         user_input = input("Would you like to (1) encrypt or (2) decrypt? Enter your choice:")
+
         if user_input == '1':
             data = input("Enter the message you wish to encrypt:")
             encoded_data = bytes(data, 'utf-8')
+            Alice_aes_key = Alice_get_AES_key(private_key)
+
+            # Getting incorrect decryption error here, I believe it's because it is not recognizing an encrypted AES
+            # key file when the function is called
             AES_encrypt(Alice_aes_key, encoded_data)
+
             print("Your tag, nonce, and encrypted text have been saved to 3 separate files: AES_tag.txt, "
                   "AES_nonce.txt, and AES_ciphertext.txt")
         if user_input == '2':
             print("Please place the 'AES_ciphertext.txt', 'AES_nonce.txt', and 'AES_tag.txt' files into the directory "
                   "containing this program.")
+
             AES_decrypt(Alice_aes_key)
 
     if user_input == '2':
         print("Please place the 'RSA_publickey.pem' file into the directory with this program and restart the program.")
-        Bob_aes_key = Bob_AES_key_gen_send()
+
+        #Bob_AES_key = Bob_AES_key_gen_send()
+
         print("Success! Your public key has been encrypted! Your encrypted AES key can be found in the "
               "'Encrypted_AESkey.txt' file.")
         print("Please share this AES key with the person you wish to communicate with. ")
+
         user_input = input("Would you like to (1) encrypt or (2) decrypt? Enter your choice:")
+
         if user_input == '1':
             data = input("Enter the message you wish to encrypt:")
             encoded_data = bytes(data, 'utf-8')
-            AES_encrypt(Bob_aes_key, encoded_data)
+            AES_encrypt(Bob_AES_key, encoded_data)
             print("Your tag, nonce, and encrypted text have been saved to 3 separate files: AES_tag.txt, "
                   "AES_nonce.txt, and AES_ciphertext.txt")
         if user_input == '2':
             print("Please place the 'AES_ciphertext.txt', 'AES_nonce.txt', and 'AES_tag.txt' files into the directory "
                   "containing this program.")
-            AES_decrypt(Bob_aes_key)
-
-
-
-
-
+            AES_decrypt(Bob_AES_key)
 
 
 if __name__ == "__main__":
