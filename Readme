@@ -1,0 +1,9 @@
+The main.py contains the basic demonstration of how to use RSA to share AES key, and then use AES to encrypt/decrypt data.
+
+Alice.py contains the user interface used by those who need to initialize a data transfer by sending out the RSA public key.
+
+Bob.py contains the user interface used by those who want to participate in a data transfer by receiving the RSA public key.
+
+Screenshots show how the code runs, and also my health conditions causing the user interface to be submitted later.
+
+install pycryptodome on Mac by using pip install pycryptodome.
